@@ -37,3 +37,5 @@ net install survsim, from("https://raw.githubusercontent.com/mjcrowther/survsim/
 Copyright (C) 2011-2022 Michael J. Crowther.
 
 Released under the GNU General Public License, version 3. See [`LICENSE`](LICENSE).
+
+The root-finding routine `survsim_mm_root()` in `survsim_msm.ado` is based on `mm_root()` from [`moremata`](https://github.com/benjann/moremata) by Ben Jann, which is distributed under the MIT License (Copyright (c) 2019 benjann). Its copyright and permission notice is reproduced in that file.
