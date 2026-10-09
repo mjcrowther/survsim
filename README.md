@@ -31,3 +31,9 @@ net install survsim, from("https://raw.githubusercontent.com/mjcrowther/survsim/
 > Crowther MJ. Simulating time-to-event data from parametric distributions, custom distributions, competing-risks models, and general multistate models. *The Stata Journal* 2022;22(1):3-24.
 
 > Jann, B. 2005. moremata: Stata module (Mata) to provide various functions. Available from http://ideas.repec.org/c/boc/bocode/s455001.html.
+
+# Licence
+
+Copyright (C) 2011-2022 Michael J. Crowther.
+
+Released under the GNU General Public License, version 3. See [`LICENSE`](LICENSE).
