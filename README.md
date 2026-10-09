@@ -68,7 +68,7 @@ Version 4.0.11 (9 October 2026).
 
 ## Licence
 
-Copyright (C) 2011-2022 Michael J. Crowther.
+Copyright (C) 2011-2026 Michael J. Crowther.
 
 Released under the GNU General Public License, version 3. See [`LICENSE`](LICENSE).
 
