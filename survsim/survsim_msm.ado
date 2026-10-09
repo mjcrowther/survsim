@@ -419,51 +419,69 @@ program define survsim_msm
 		//====================================================================================================================//
 		//define Mata functions & pointers
 			
-			quietly {
+			local kbefore = c(k)
+			cap n {
 				
-				//transition-specific hazards
-				mata: Phfs = J(`Nhazards',1,NULL)
-				findfile survsim_msm_mataf.mata
-				local smfile `r(fn)'
-				forvalues i=1/`Nhazards' {
-					global i `i'
-					global matahazard`i' `matahazard`i''
-					do "`smfile'"
-					//mata: function hf`i'(tnodes,expxb,tdexb,hvars,lt,time0) return(`matahazard`i'')
-					mata: Phfs[`i'] = &hf`i'()
-					macro drop i matahazard`i'
-				}
-				
-				//total hazard from each state
-				mata: Ptotalhfs = J(`Nstates',1,NULL)
-				findfile survsim_msm_mataf_total.mata
-				local smfile `r(fn)'
-				forvalues i=1/`Nstates' {
-					if "`totalhazard`i''"!="" {
+				quietly {
+					
+					//transition-specific hazards
+					mata: Phfs = J(`Nhazards',1,NULL)
+					findfile survsim_msm_mataf.mata
+					local smfile `r(fn)'
+					forvalues i=1/`Nhazards' {
 						global i `i'
-						global totalhazard`i' `totalhazard`i''
+						global matahazard`i' `matahazard`i''
 						do "`smfile'"
- 						//mata: function totalhf`i'(tnodes,expxb,tdexb,hvars,lt,time0) return(`totalhazard`i'')
-						mata: Ptotalhfs[`i'] = &totalhf`i'()
-						macro drop i totalhazard`i'
+						//mata: function hf`i'(tnodes,expxb,tdexb,hvars,lt,time0) return(`matahazard`i'')
+						mata: Phfs[`i'] = &hf`i'()
+						macro drop i matahazard`i'
 					}
+					
+					//total hazard from each state
+					mata: Ptotalhfs = J(`Nstates',1,NULL)
+					findfile survsim_msm_mataf_total.mata
+					local smfile `r(fn)'
+					forvalues i=1/`Nstates' {
+						if "`totalhazard`i''"!="" {
+							global i `i'
+							global totalhazard`i' `totalhazard`i''
+							do "`smfile'"
+							//mata: function totalhf`i'(tnodes,expxb,tdexb,hvars,lt,time0) return(`totalhazard`i'')
+							mata: Ptotalhfs[`i'] = &totalhf`i'()
+							macro drop i totalhazard`i'
+						}
+					}
+					
 				}
+
+				gaussquad_ss, n(`nodes')	//Gauss-Legendre nodes and weights
+				
+				mata: survsim_msm(Phfs,Ptotalhfs)
 				
 			}
-
-			gaussquad_ss, n(`nodes')	//Gauss-Legendre nodes and weights
+			local rc = c(rc)
 			
-			mata: survsim_msm(Phfs,Ptotalhfs)
-			
-	//done
-	mata mata drop Phfs Ptotalhfs
+	//done, or errored out: tidy up either way
+	cap mata mata drop Phfs
+	cap mata mata drop Ptotalhfs
 	forvalues i=1/`Nhazards' {
-		mata mata drop hf`i'()
+		cap mata mata drop hf`i'()
+		cap macro drop matahazard`i'
 	}
 	forvalues i=1/`Nstates' {
 		if "`totalhazard`i''"!="" {
-			mata mata drop totalhf`i'()
+			cap mata mata drop totalhf`i'()
+			cap macro drop totalhazard`i'
 		}
+	}
+	cap macro drop i
+	
+	if `rc' {
+		//remove any variables created before the error
+		if c(k)>`kbefore' {
+			cap mata: st_dropvar((`kbefore'+1)..st_nvar())
+		}
+		exit `rc'
 	}
 		
 end
