@@ -1,5 +1,7 @@
 # survsim
 
+> **`survsim` is no longer developed.** Its successor is [`avalon`](https://reddooranalytics.se/software/avalon/), from Red Door Analytics, for simulating survival data in R and Stata. `avalon` is a complete rewrite with a new syntax, not a new version of `survsim`. This repository is an archive: version 4.0.11 is the final version, and can still be installed as described below.
+
 Simulating time-to-event data in Stata, from parametric distributions, custom distributions, competing risks models and general multi-state models.
 
 For an introductory seminar, see [Simulating time-to-event data from parametric distributions, custom distributions, competing risk models and general multi-state models](https://www.youtube.com/watch?v=hmeE0qPOjP8).
