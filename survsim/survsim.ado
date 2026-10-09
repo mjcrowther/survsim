@@ -1,7 +1,13 @@
-*! version 4.0.10 14oct2022 MJC
+*! version 4.0.11 09oct2026 MJC
 
 /*
 History
+09oct2026 version 4.0.11 - bug fix: survsim_msm would loop, creating variables, 
+                           when startstate() held a missing or invalid value; 
+                           now exits with an error
+                         - bug fix: after an error, the next multi-state call 
+                           would fail as Mata functions were left behind; now 
+                           fixed
 14oct2022 version 4.0.10 - bug fix: reversible transition would error out as 
                            transitions were not picked up; now fixed
                          - bug fix: nested error messages were not shown; now 

@@ -50,7 +50,7 @@ Further examples, including competing risks and multi-state models, are in the h
 
 ## Version
 
-Version 4.0.10 (14 October 2022).
+Version 4.0.11 (9 October 2026).
 
 ## References
 
