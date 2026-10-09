@@ -165,10 +165,21 @@ program define survsim_msm
 						di as error "Invalid startstate()"
 						exit 198
 					}
+					//every observation needs a valid starting state
+					qui count if missing(`startstate')
+					if r(N) {
+						di as error "startstate(`startstate') contains missing values"
+						exit 198
+					}
+					qui count if `startstate'!=int(`startstate') | `startstate'<1 | `startstate'>`Nstates'
+					if r(N) {
+						di as error "startstate(`startstate') must contain integers between 1 and `Nstates'"
+						exit 198
+					}
 				}
 				else {
-					if `startstate'<1 {
-						di as error "startstate() must be >0"
+					if `startstate'<1 | `startstate'>`Nstates' {
+						di as error "startstate() must be an integer between 1 and `Nstates'"
 						exit 198
 					}
 				}
